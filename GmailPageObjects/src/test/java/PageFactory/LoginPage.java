@@ -34,7 +34,7 @@ public class LoginPage extends GmailAbstractPage {
     public LoginPage logInAccount(String uName, String passwd) {
         username.sendKeys(uName);
         nextButton.click();
-        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfAllElements(password));
+        waitForElement(password);
         password.get(0).sendKeys(passwd);
         nextButton.click();
         return new LoginPage(driver);

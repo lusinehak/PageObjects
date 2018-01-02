@@ -25,6 +25,8 @@ public class MailActions extends GmailAbstractPage {
     private static final String SELECT_DRAFT_EMAIL = "//span[contains(text(), '%s')]";
     private static final String GOOGLE_ACCOUNT = "//span[@class='gb_ab gbii']";
     private static final String LOG_OFF = "//a[text()='Sign out']";
+    private static final String MESSAGE_WINDOW = "//div[@class='nH Hd']";
+    private static final String EMPTY_DRAFT = "//td[@class='TC']";
 
     public MailActions(WebDriver driver) {
         super(driver);
@@ -64,13 +66,19 @@ public class MailActions extends GmailAbstractPage {
     private WebElement selectItem;
 
     @FindBy (xpath =  SELECT_DRAFT_EMAIL)
-    private List<WebElement> selectDraftEmail;
+    private WebElement selectDraftEmail;
 
     @FindBy (xpath =  GOOGLE_ACCOUNT)
     private WebElement googleAccount;
 
     @FindBy (xpath =  LOG_OFF)
     private WebElement logOff;
+
+    @FindBy (xpath =  MESSAGE_WINDOW)
+    private List<WebElement> messageWindow;
+
+    @FindBy (xpath =  EMPTY_DRAFT)
+    private WebElement emptyDraft;
 
     public MailActions composeAndSaveAsDraft(String receiver, String sbj, String cnt) {
         goToMail.click();
@@ -99,9 +107,9 @@ public class MailActions extends GmailAbstractPage {
         String data [] = new String[3];
         String email = String.format(SELECT_DRAFT_EMAIL, sbj);
         String receiver = String.format(GET_RECEIVER, name);
-        selectDraftEmail = driver.findElements(By.xpath(email));
-        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfAllElements(selectDraftEmail));
-        selectDraftEmail.get(0).click();
+        selectDraftEmail = driver.findElement(By.xpath(email));
+        selectDraftEmail.click();
+        waitForElement(messageWindow);
         getReceiver = driver.findElement(By.xpath(receiver));
         data[0] = getReceiver.getText().toString();
         data[1] = getSubject.getAttribute("value").toString();
@@ -112,6 +120,10 @@ public class MailActions extends GmailAbstractPage {
     public MailActions sendMail() {
         sendEmail.click();
         return new MailActions(driver);
+    }
+
+    public boolean isDraftEmpty() {
+        return emptyDraft.isDisplayed();
     }
 
     public void logOut() {

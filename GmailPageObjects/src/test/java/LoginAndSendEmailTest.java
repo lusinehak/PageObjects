@@ -54,13 +54,8 @@ public class LoginAndSendEmailTest {
 
     @Test(dependsOnMethods = "send")
     public void checkDraft() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        boolean isAbsent = new MailActions(driver).goToFolder(Constants.DRAFTS).isItemExists(Constants.SUBJECT);
-        Assert.assertFalse(isAbsent, "Item is exists in draft folder.");
+        boolean isAbsent = new MailActions(driver).isDraftEmpty();
+        Assert.assertTrue(isAbsent, "Item exists in draft folder.");
     }
 
     @AfterClass
