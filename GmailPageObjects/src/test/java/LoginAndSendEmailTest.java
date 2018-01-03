@@ -40,10 +40,13 @@ public class LoginAndSendEmailTest {
 
     @Test(dependsOnMethods = "composeAndSave")
     public void checkFields() {
-        String data [] = new MailActions(driver).getRequiredData(Constants.RECEIVER, Constants.SUBJECT);
-        Assert.assertEquals(data[0], Constants.RECEIVER, "Invalid receiver");
-        Assert.assertEquals(data[1], Constants.SUBJECT, "Invalid subject");
-        Assert.assertEquals(data[2], Constants.CONTENT, "Invalid content");
+        new MailActions(driver).selectDraftItem( Constants.SUBJECT);
+        String receiver = new MailActions(driver).getReceiver(Constants.RECEIVER);
+        String subject = new MailActions(driver).getSubject();
+        String content = new MailActions(driver).getContent();
+        Assert.assertEquals(receiver, Constants.RECEIVER, "Invalid receiver");
+        Assert.assertEquals(subject, Constants.SUBJECT, "Invalid subject");
+        Assert.assertEquals(content, Constants.CONTENT, "Invalid content");
     }
 
     @Test(dependsOnMethods = "checkFields")

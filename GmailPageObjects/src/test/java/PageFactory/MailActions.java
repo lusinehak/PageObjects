@@ -103,18 +103,25 @@ public class MailActions extends GmailAbstractPage {
         return selectItem.isDisplayed();
     }
 
-    public String [] getRequiredData(String name, String sbj) {
-        String data [] = new String[3];
+    public void selectDraftItem(String sbj) {
         String email = String.format(SELECT_DRAFT_EMAIL, sbj);
-        String receiver = String.format(GET_RECEIVER, name);
         selectDraftEmail = driver.findElement(By.xpath(email));
         selectDraftEmail.click();
         waitForElement(messageWindow);
+    }
+
+    public String getReceiver(String name) {
+        String receiver = String.format(GET_RECEIVER, name);
         getReceiver = driver.findElement(By.xpath(receiver));
-        data[0] = getReceiver.getText().toString();
-        data[1] = getSubject.getAttribute("value").toString();
-        data[2] = content.getText().toString();
-        return data;
+        return getReceiver.getText().toString();
+    }
+
+    public String getSubject() {
+        return getSubject.getAttribute("value").toString();
+    }
+
+    public String getContent() {
+        return content.getText().toString();
     }
 
     public MailActions sendMail() {
