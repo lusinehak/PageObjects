@@ -1,0 +1,13 @@
+rootLogger=DEBUG, console, RollingAppender
+logger.org.apache.http=ERROR
+
+appender.console=org.apache.log4j.ConsoleAppender
+appender.console.Target=System.out
+appender.console.layout=org.apache.log4j.PatternLayout
+appender.console.layout.ConversionPattern=%d{HH:mm:ss} %-5p %C{1}.%M - %m%n
+
+appender.RollingAppender=org.apache.log4j.DailyRollingFileAppender
+appender.RollingAppender.File=app.log
+appender.RollingAppender.DatePattern='.'yyyy-MM-dd
+appender.RollingAppender.layout=org.apache.log4j.PatternLayout
+appender.RollingAppender.layout.ConversionPattern=[%p] %d %c %M - %m%n
